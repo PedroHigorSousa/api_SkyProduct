@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { request, response } = require('express');
 
 const Product = mongoose.model('Product');
 
@@ -27,5 +28,13 @@ module.exports = {
         return response.json(product);
     },
 
-    async destroy() { },
+    async destroy(request, response) {
+        try {
+            await Product.findByIdAndRemove(request.params.id);
+
+            return response.send();
+        } catch (error) {
+            console.warn(error);
+        }
+    },
 }
